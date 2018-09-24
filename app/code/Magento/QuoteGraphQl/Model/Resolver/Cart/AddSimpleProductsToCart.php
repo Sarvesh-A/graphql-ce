@@ -22,7 +22,7 @@ use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\Quote;
 use Magento\QuoteGraphQl\Model\Cart\AddSimpleProductToCartProcessor;
-use Magento\QuoteGraphQl\Model\Resolver\DataProvider\Cart\CartHydrator;
+use Magento\QuoteGraphQl\Model\Resolver\DataProvider\Cart\CartItems;
 
 /**
  * Add simple product to cart GraphQl resolver
@@ -46,9 +46,9 @@ class AddSimpleProductsToCart implements ResolverInterface
     private $maskedQuoteIdToQuoteId;
 
     /**
-     * @var CartHydrator
+     * @var CartItems
      */
-    private $cartHydrator;
+    private $cartItemsDataProvider;
 
     /**
      * @var ArrayManager
@@ -67,7 +67,7 @@ class AddSimpleProductsToCart implements ResolverInterface
 
     /**
      * @param AddSimpleProductToCartProcessor $addSimpleProductToCartProcessor
-     * @param CartHydrator $cartHydrator
+     * @param CartItems $cartItemsDataProvider
      * @param ArrayManager $arrayManager
      * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
      * @param CartRepositoryInterface $cartRepository
@@ -76,7 +76,7 @@ class AddSimpleProductsToCart implements ResolverInterface
      */
     public function __construct(
         AddSimpleProductToCartProcessor $addSimpleProductToCartProcessor,
-        CartHydrator $cartHydrator,
+        CartItems $cartItemsDataProvider,
         ArrayManager $arrayManager,
         MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         CartRepositoryInterface $cartRepository,
@@ -86,7 +86,7 @@ class AddSimpleProductsToCart implements ResolverInterface
         $this->valueFactory = $valueFactory;
         $this->userContext = $userContext;
         $this->arrayManager = $arrayManager;
-        $this->cartHydrator = $cartHydrator;
+        $this->cartItemsDataProvider = $cartItemsDataProvider;
         $this->cartRepository = $cartRepository;
         $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
         $this->addSimpleProductToCartProcessor = $addSimpleProductToCartProcessor;
@@ -137,7 +137,7 @@ class AddSimpleProductsToCart implements ResolverInterface
 
         $result = function () use ($cart) {
             return [
-                'cart' => $this->cartHydrator->hydrate($cart)
+                'cart' => $this->cartItemsDataProvider->getData($cart)
             ];
         };
 

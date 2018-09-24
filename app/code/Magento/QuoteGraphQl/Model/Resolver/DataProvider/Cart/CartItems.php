@@ -12,16 +12,16 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item as QuoteItem;
 
 /**
- * Cart Hydrator class
+ * CartItems data provider class
  */
-class CartHydrator
+class CartItems
 {
     /**
-     * Hydrate cart to plain array
+     * Provide cart items as a plain array
      * @param CartInterface|Quote $cart
      * @return array
      */
-    public function hydrate(CartInterface $cart): array
+    public function getData(CartInterface $cart): array
     {
         $items = [];
 
